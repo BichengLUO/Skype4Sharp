@@ -10,6 +10,7 @@ namespace Skype4Sharp.Skype4SharpCore
     class AuthModule
     {
         private Skype4Sharp parentSkype;
+        private string clientGatewayMessengerDomain = "https://bn2-client-s.gateway.messenger.live.com";
         public AuthModule(Skype4Sharp skypeToUse)
         {
             parentSkype = skypeToUse;
@@ -61,7 +62,7 @@ namespace Skype4Sharp.Skype4SharpCore
         }
         private void setRegTokenAndEndpoint()
         {
-            HttpWebRequest webRequest = parentSkype.mainFactory.createWebRequest_POST("https://client-s.gateway.messenger.live.com/v1/users/ME/endpoints", new string[][] { new string[] { "Authentication", "skypetoken=" + parentSkype.authTokens.SkypeToken } }, Encoding.ASCII.GetBytes("{}"), "application/x-www-form-urlencoded");
+            HttpWebRequest webRequest = parentSkype.mainFactory.createWebRequest_POST(clientGatewayMessengerDomain + "/v1/users/ME/endpoints", new string[][] { new string[] { "Authentication", "skypetoken=" + parentSkype.authTokens.SkypeToken } }, Encoding.ASCII.GetBytes("{}"), "application/x-www-form-urlencoded");
             using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
             {
                 parentSkype.authTokens.RegistrationToken = webResponse.GetResponseHeader("Set-RegistrationToken").Split(';')[0];
@@ -71,9 +72,9 @@ namespace Skype4Sharp.Skype4SharpCore
         }
         private void startSubscription()
         {
-            HttpWebRequest propertiesRequest = parentSkype.mainFactory.createWebRequest_PUT("https://client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/properties?name=supportsMessageProperties", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"supportsMessageProperties\":true}"), "application/json");
+            HttpWebRequest propertiesRequest = parentSkype.mainFactory.createWebRequest_PUT(clientGatewayMessengerDomain + "/v1/users/ME/endpoints/SELF/properties?name=supportsMessageProperties", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"supportsMessageProperties\":true}"), "application/json");
             using (HttpWebResponse webResponse = (HttpWebResponse)propertiesRequest.GetResponse()) { }
-            HttpWebRequest subscriptionRequest = parentSkype.mainFactory.createWebRequest_POST("https://client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"channelType\":\"httpLongPoll\",\"template\":\"raw\",\"interestedResources\":[\"/v1/users/ME/conversations/ALL/properties\",\"/v1/users/ME/conversations/ALL/messages\",\"/v1/users/ME/contacts/ALL\",\"/v1/threads/ALL\"]}"), "application/json");
+            HttpWebRequest subscriptionRequest = parentSkype.mainFactory.createWebRequest_POST(clientGatewayMessengerDomain + "/v1/users/ME/endpoints/SELF/subscriptions", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"channelType\":\"httpLongPoll\",\"template\":\"raw\",\"interestedResources\":[\"/v1/users/ME/conversations/ALL/properties\",\"/v1/users/ME/conversations/ALL/messages\",\"/v1/users/ME/contacts/ALL\",\"/v1/threads/ALL\"]}"), "application/json");
             using (HttpWebResponse webResponse = (HttpWebResponse)subscriptionRequest.GetResponse()) { }
         }
         private void setProfile()

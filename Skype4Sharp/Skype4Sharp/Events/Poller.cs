@@ -38,7 +38,7 @@ namespace Skype4Sharp.Events
                     try
                     {
                         string rawInfo = "";
-                        HttpWebRequest webRequest = parentSkype.mainFactory.createWebRequest_POST("https://client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions/0/poll", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes(""), "application/json");
+                        HttpWebRequest webRequest = parentSkype.mainFactory.createWebRequest_POST("https://bn2-client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions/0/poll", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes(""), "application/json");
                         using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
                         {
                             rawInfo = new StreamReader(webResponse.GetResponseStream()).ReadToEnd();

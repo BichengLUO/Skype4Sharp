@@ -35,6 +35,7 @@ namespace Skype4Sharp
         private AuthModule mainAuthModule;
         private MessageModule mainMessageModule;
         private ContactModule mainContactModule;
+        private string clientGatewayMessengerDomain = "https://bn2-client-s.gateway.messenger.live.com";
         public Skype4Sharp(SkypeCredentials loginData, WebProxy loginProxy = null)
         {
             authInfo = loginData;
@@ -85,7 +86,7 @@ namespace Skype4Sharp
             blockUnauthorized();
             Chat targetChat = new Chat(this);
             targetChat.ID = "8:" + targetUser.ToLower();
-            targetChat.ChatLink = "https://db3-client-s.gateway.messenger.live.com/v1/users/ME/conversations/" + targetChat.ID;
+            targetChat.ChatLink = clientGatewayMessengerDomain + "/v1/users/ME/conversations/" + targetChat.ID;
             targetChat.Type = Enums.ChatType.Private;
             return mainMessageModule.createMessage(targetChat, newMessage, messageType);
         }

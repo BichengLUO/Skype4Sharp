@@ -12,6 +12,7 @@ namespace Skype4Sharp
         public string ChatLink;
         public Enums.ChatType Type;
         public Skype4Sharp parentSkype;
+        private string clientGatewayMessengerDomain = "https://bn2-client-s.gateway.messenger.live.com";
         public Chat(Skype4Sharp skypeToUse)
         {
             parentSkype = skypeToUse;
@@ -24,7 +25,7 @@ namespace Skype4Sharp
                 {
                     return new User[] { parentSkype.selfProfile, parentSkype.GetUser(ID.Remove(0, 2)) };
                 }
-                HttpWebRequest userListRequest = parentSkype.mainFactory.createWebRequest_GET("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
+                HttpWebRequest userListRequest = parentSkype.mainFactory.createWebRequest_GET(clientGatewayMessengerDomain + "/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
                 string rawJSON = "";
                 using (HttpWebResponse webResponse = (HttpWebResponse)userListRequest.GetResponse())
                 {
@@ -43,7 +44,7 @@ namespace Skype4Sharp
         {
             get
             {
-                HttpWebRequest chatPropertyRequest = parentSkype.mainFactory.createWebRequest_GET("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
+                HttpWebRequest chatPropertyRequest = parentSkype.mainFactory.createWebRequest_GET(clientGatewayMessengerDomain + "/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
                 string rawJSON = "";
                 using (HttpWebResponse webResponse = (HttpWebResponse)chatPropertyRequest.GetResponse())
                 {
@@ -54,7 +55,7 @@ namespace Skype4Sharp
             }
             set
             {
-                HttpWebRequest topicChangeRequest = parentSkype.mainFactory.createWebRequest_PUT("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "/properties?name=topic", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"topic\":\"" + value.JsonEscape() + "\"}"), "application/json");
+                HttpWebRequest topicChangeRequest = parentSkype.mainFactory.createWebRequest_PUT(clientGatewayMessengerDomain + "/v1/threads/" + ID + "/properties?name=topic", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"topic\":\"" + value.JsonEscape() + "\"}"), "application/json");
                 using (HttpWebResponse webResponse = (HttpWebResponse)topicChangeRequest.GetResponse()) { }
             }
         }
@@ -68,13 +69,13 @@ namespace Skype4Sharp
         public void Kick(string usernameToKick)
         {
             checkChatType();
-            HttpWebRequest kickUserRequest = parentSkype.mainFactory.createWebRequest_DELETE("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "/members/8:" + usernameToKick.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
+            HttpWebRequest kickUserRequest = parentSkype.mainFactory.createWebRequest_DELETE(clientGatewayMessengerDomain + "/v1/threads/" + ID + "/members/8:" + usernameToKick.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
             using (HttpWebResponse webResponse = (HttpWebResponse)kickUserRequest.GetResponse()) { }
         }
         public void Add(string usernameToAdd)
         {
             checkChatType();
-            HttpWebRequest addUserRequest = parentSkype.mainFactory.createWebRequest_PUT("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "/members/8:" + usernameToAdd.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"role\":\"User\"}"), "application/json");
+            HttpWebRequest addUserRequest = parentSkype.mainFactory.createWebRequest_PUT(clientGatewayMessengerDomain + "/v1/threads/" + ID + "/members/8:" + usernameToAdd.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"role\":\"User\"}"), "application/json");
             using (HttpWebResponse webResponse = (HttpWebResponse)addUserRequest.GetResponse()) { }
         }
         public void Leave()
@@ -84,7 +85,7 @@ namespace Skype4Sharp
         public void SetAdmin(string usernameToPromote)
         {
             checkChatType();
-            HttpWebRequest addUserRequest = parentSkype.mainFactory.createWebRequest_PUT("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "/members/8:" + usernameToPromote.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"role\":\"Admin\"}"), "application/json");
+            HttpWebRequest addUserRequest = parentSkype.mainFactory.createWebRequest_PUT(clientGatewayMessengerDomain + "/v1/threads/" + ID + "/members/8:" + usernameToPromote.ToLower(), new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } }, Encoding.ASCII.GetBytes("{\"role\":\"Admin\"}"), "application/json");
             using (HttpWebResponse webResponse = (HttpWebResponse)addUserRequest.GetResponse()) { }
         }
         public Enums.ChatRole UserRole(string userToCheck)
@@ -97,7 +98,7 @@ namespace Skype4Sharp
             {
                 return Enums.ChatRole.User;
             }
-            HttpWebRequest chatPropertyRequest = parentSkype.mainFactory.createWebRequest_GET("https://client-s.gateway.messenger.live.com/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
+            HttpWebRequest chatPropertyRequest = parentSkype.mainFactory.createWebRequest_GET(clientGatewayMessengerDomain + "/v1/threads/" + ID + "?view=msnp24Equivalent", new string[][] { new string[] { "RegistrationToken", parentSkype.authTokens.RegistrationToken } });
             string rawJSON = "";
             using (HttpWebResponse webResponse = (HttpWebResponse)chatPropertyRequest.GetResponse())
             {
