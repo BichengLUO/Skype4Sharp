@@ -15,7 +15,7 @@ namespace Skype4Sharp.Events
         private List<string> processedContactRequests;
         Skype4Sharp parentSkype;
         private List<Thread> runningPolls = new List<Thread>();
-        private string clientGatewayMessengerDomain = "https://bn2-client-s.gateway.messenger.live.com";
+        private string clientGatewayMessengerDomain = "https://client-s.gateway.messenger.live.com";
         public Poller(Skype4Sharp toUse)
         {
             parentSkype = toUse;

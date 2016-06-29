@@ -12,7 +12,7 @@ namespace Skype4Sharp
         public string ChatLink;
         public Enums.ChatType Type;
         public Skype4Sharp parentSkype;
-        private string clientGatewayMessengerDomain = "https://bn2-client-s.gateway.messenger.live.com";
+        private string clientGatewayMessengerDomain = "https://client-s.gateway.messenger.live.com";
         public Chat(Skype4Sharp skypeToUse)
         {
             parentSkype = skypeToUse;

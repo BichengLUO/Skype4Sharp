@@ -34,7 +34,34 @@ namespace ExampleBot
 
         static void Main(string[] args)
         {
-            new Program(new SkypeCredentials("USERNAME", "PASSWORD"));
+            Console.WriteLine("Enter your Skype name:");
+            string username = Console.ReadLine();
+            string pass = "";
+            Console.WriteLine("Enter your password: ");
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
+
+                // Backspace Should Not Work
+                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                {
+                    pass += key.KeyChar;
+                    Console.Write("*");
+                }
+                else
+                {
+                    if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        pass = pass.Substring(0, (pass.Length - 1));
+                        Console.Write("\b \b");
+                    }
+                }
+            }
+            // Stops Receving Keys Once Enter is Pressed
+            while (key.Key != ConsoleKey.Enter);
+            Console.WriteLine();
+            new Program(new SkypeCredentials(username, pass));
             while (true) { }
         }
 
